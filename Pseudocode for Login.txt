@@ -1,0 +1,21 @@
+function login(email, password):
+    if email is empty or password is empty:
+        return "Email and password are required."
+
+    if not isValidEmail(email):
+        return "Invalid email format."
+
+    user = queryDatabase("SELECT * FROM users WHERE email = ?", email)
+
+    if user is null:
+        return "No user found with this email."
+
+    if verifyPassword(password, user.hashedPassword):
+        setupUserSession(user)
+        return "Login successful. Redirecting to dashboard..."
+    else:
+        return "Incorrect password."
+
+function isValidEmail(email):
+    regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+    return match(regex, email)

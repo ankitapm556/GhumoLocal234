@@ -1,0 +1,24 @@
+function register(name, email, phone, address, destination, guests, arrivalDate, departureDate):
+    if anyFieldIsEmpty(name, email, phone, address, destination, guests, arrivalDate, departureDate):
+        return "All fields are required."
+
+    if not isValidEmail(email):
+        return "Invalid email format."
+
+    if not isValidPhoneNumber(phone):
+        return "Invalid phone number format."
+
+    if not isValidDate(arrivalDate) or not isValidDate(departureDate):
+        return "Invalid date format."
+
+    if isDuplicateEmail(email):
+        return "An account with this email already exists."
+
+    insertUserIntoDatabase(
+        name, email, phone, address,
+        destination, guests, arrivalDate, departureDate
+    )
+
+    return "Registration successful. Thank you for choosing our services!"
+
+function anyFieldIsEmpt

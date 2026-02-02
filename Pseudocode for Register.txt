@@ -1,0 +1,17 @@
+function register(name, email, password):
+    if name is empty or email is empty or password is empty:
+        return "Name, email, and password are required."
+
+    if not isValidEmail(email):
+        return "Invalid email format."
+
+    if not isStrongPassword(password):
+        return "Password should be at least 8 characters long and contain a mix of letters, numbers, and special characters."
+
+    if isDuplicateEmail(email):
+        return "An account with this email already exists."
+
+    hashedPassword = hashPassword(password)
+    insertUserIntoDatabase(name, email, hashedPassword)
+
+    return "Registration successful. Please check your email for account verification."
