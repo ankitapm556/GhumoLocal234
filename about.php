@@ -1,3 +1,64 @@
+<?php
+// Connect to database
+$conn = mysqli_connect("localhost", "root", "", "ghumolocal");
+
+if(isset($_POST['submit_review'])) {
+
+   $name = mysqli_real_escape_string($conn, $_POST['name']);
+   $rating = mysqli_real_escape_string($conn, $_POST['rating']);
+   $review = mysqli_real_escape_string($conn, $_POST['review']);
+
+   // ================= IMAGE UPLOAD =================
+   $image_name = $_FILES['profile_photo']['name'];
+   $image_tmp = $_FILES['profile_photo']['tmp_name'];
+   $image_size = $_FILES['profile_photo']['size'];
+
+   $upload_folder = "uploads/";
+
+   // Create uploads folder if not exists
+   if(!is_dir($upload_folder)){
+      mkdir($upload_folder, 0777, true);
+   }
+
+   // Create unique image name
+   $new_image_name = time() . "_" . basename($image_name);
+   $target_file = $upload_folder . $new_image_name;
+
+   // Allowed extensions
+   $allowed_types = ['jpg','jpeg','png','gif'];
+   $file_ext = strtolower(pathinfo($new_image_name, PATHINFO_EXTENSION));
+
+   if(in_array($file_ext, $allowed_types)) {
+
+      if($image_size <= 2 * 1024 * 1024) { // 2MB limit
+
+         if(move_uploaded_file($image_tmp, $target_file)) {
+
+            // Save to database (NOW includes profile_photo column)
+            $query = "INSERT INTO reviews (name, rating, review, profile_photo) 
+                      VALUES ('$name', '$rating', '$review', '$target_file')";
+
+            if(mysqli_query($conn, $query)) {
+               echo "<script>alert('Review saved to Ghumo Local!'); window.location.href='about.php';</script>";
+            } else {
+               echo "Database Error: " . mysqli_error($conn);
+            }
+
+         } else {
+            echo "Failed to upload image.";
+         }
+
+      } else {
+         echo "Image size must be less than 2MB.";
+      }
+
+   } else {
+      echo "Only JPG, JPEG, PNG & GIF files allowed.";
+   }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +75,7 @@
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="css/auth.css">
 
 </head>
 <body>
@@ -29,8 +91,8 @@
       <a href="about.php">about</a>
       <a href="package.php">package</a>
       <a href="book.php">book</a>
-      <a href="login.php">login</a>
-      <a href="registration.php">register</a>
+      <a href="login.php" class="btn-login" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Login</a>
+      <a href="registration.php" class="btn-register" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Register</a>
    </nav>
 
    <div id="menu-btn" class="fas fa-bars"></div>
@@ -53,8 +115,8 @@
 
    <div class="content">
       <h3>why choose us?</h3>
-      <p>Pick Us For The Best Hidden Gems In Odisha! With the help of our in-depth guides, which highlight unusual locations, rich cultural histories, and breathtaking natural landscapes, discover overlooked gems. Easy exploration is ensured by our user-friendly interface, and stunning visuals transport you to the beauty of Odisha. Personalized Suggestions: Whether you're interested in exploring ancient temples, peaceful beaches, or tribal villages, we can customize your trip to suit your interests. You can rely on our accurate, current information and sincere reviews from travelers. Travel planning is made easier with seamless booking integration, and your experience is improved with interactive features. Come Aboard Our Exciting Community And Take Off On Memorable Journeys While Discovering The Hidden Gems Of Odisha. With Us, Your Next Journey Is Awaiting!</p>
-      <div class="icons-container">
+      <p>At Ghumo Local, quality and service go hand in hand. We are committed to delivering excellence at every stage of your journey by closely monitoring client satisfaction and continuously finding new ways to exceed expectations. Our focus is on providing true value for money—because exceptional value means getting every detail right, not just offering the lowest price.
+         <p>Designed with you in mind, our travel packages are fully flexible and can be tailored or created from scratch to match your unique preferences. Backed by experienced travel experts and trusted resources, we turn your dream holiday into a seamless and memorable experience.      <div class="icons-container">
          <div class="icons">
             <i class="fas fa-map"></i>
             <span>top destinations</span>
@@ -83,45 +145,28 @@
    <div class="swiper reviews-slider">
 
       <div class="swiper-wrapper">
+         <?php
+$result = mysqli_query($conn, "SELECT * FROM reviews ORDER BY id DESC");
 
-      <div class="swiper-slide slide">
-            <div class="stars">
-               <i class="fas fa-star"></i>
-               <i class="fas fa-star"></i>
-               <i class="fas fa-star"></i>
-               <i class="fas fa-star"></i>
-               <i class="fas fa-star"></i>
-            </div>
-            <p>Throughout a really trying time, you were a pleasure to work with. After comparing prices, we found a fantastic vacation deal on this website. Everything arrived on schedule, and the personnel was supportive as needed. Without a doubt, I would suggest this website and utilize it once more to plan my upcoming vacation.</p>
-            <h3>Ankita Behera</h3>
-            <span>traveler</span>
-            <img src="images/pic-4.png" alt="">
-         </div>
+while($row = mysqli_fetch_assoc($result)){
+?>
+  <div class="swiper-slide slide">
+    <div class="stars">
+      <?php for($i=1; $i<=5; $i++){
+        echo $i <= $row['rating']
+        ? '<i class="fas fa-star"></i>'
+        : '<i class="far fa-star"></i>';
+      } ?>
+    </div>
 
-         <div class="swiper-slide slide">
-            <div class="stars">
-               <i class="fas fa-star"></i>
-               <i class="fas fa-star"></i>
-               <i class="fas fa-star"></i>
-            </div>
-            <p>Simple transaction with excellent support Will definitely make another reservation. We appreciate Prangya's assistance in getting another person on our vacation.</p>
-            <h3>Ashutosh Mohanty</h3>
-            <span>traveler</span>
-            <img src="images/pic-5.png" alt="">
-         </div>
-
-         <div class="swiper-slide slide">
-            <div class="stars">
-               <i class="fas fa-star"></i>
-               <i class="fas fa-star"></i>
-               <i class="fas fa-star"></i>
-               <i class="fas fa-star"></i>
-            </div>
-            <p>The service was accurate and efficient, and the price was excellent. Extremely advisable</p>
-            <h3>SubhaLaksmi Panda</h3>
-            <span>traveler</span>
-            <img src="images/pic-6.png" alt="">
-         </div>
+    <p><?= $row['review']; ?></p>
+    <h3><?= $row['name']; ?></h3>
+    <span>traveler</span>
+    
+      <!-- ✅ Profile Photo Added -->
+      <img src="<?= $row['profile_photo']; ?>" alt="profile">
+  </div>
+<?php } ?>
 
 
          <div class="swiper-slide slide">
@@ -132,8 +177,8 @@
                <i class="fas fa-star"></i>
                <i class="fas fa-star"></i>
             </div>
-            <p>Many thanks to the entire travel company that helped us plan our vacation. The team's method of keeping me informed of all the needs for the trip was quite effective. Overall, I was quite pleased with the service and am eager to travel with you again soon!</p>
-            <h3>Arpan Biswas</h3>
+            <p>Many thanks to all travel team involved in arranging our holiday. Very efficient process from team to keep me advised of all requirements for the trip. Overall was very impressed with service provided and looking forward to next holiday with you!</p>
+            <h3>Monalisa Dwibedy</h3>
             <span>traveler</span>
             <img src="images/pic-1.png" alt="">
          </div>
@@ -145,8 +190,8 @@
                <i class="fas fa-star"></i>
                <i class="fas fa-star"></i>
             </div>
-            <p>I had the most wonderful vacation. I had never been to Fiji or the InterContinental before. I had an amazing time and can't wait to return. Making a reservation with you guys was simple, professional, and trouble-free. Regards</p>
-            <h3>Smruti Pruseth</h3>
+            <p>I had the most amazing holiday. This was my first time to Fiji and the InterContinental. I loved every moment & cannot wait to go back again. Booking with you guys was professional, easy & went without a hitch. Thank you</p>
+            <h3>Prangya Satapathy</h3>
             <span>traveler</span>
             <img src="images/pic-2.png" alt="">
          </div>
@@ -157,8 +202,8 @@
                <i class="fas fa-star"></i>
                <i class="fas fa-star"></i>
             </div>
-            <p>From the time of booking to obtaining the trip details, everything went smoothly. We would definitely book with you guys again and suggest you to family and friends. Cheers!</p>
-            <h3>Abhinab Behera</h3>
+            <p>The experience was stress free from booking through to receiving the details of the holiday and we would book with you guys again and recommend to family or friends Cheers</p>
+            <h3>Smruti Pruseth</h3>
             <span>traveler</span>
             <img src="images/pic-3.png" alt="">
          </div>
@@ -184,7 +229,7 @@
                <i class="fas fa-star"></i>
             </div>
             <p>Trouble free transaction and great service Will definitely book again. Thanks to Lisa for all your help adding another person to our trip</p>
-            <h3>Ashutosh Mohanty</h3>
+            <h3>Yogesh Kotkar</h3>
             <span>traveler</span>
             <img src="images/pic-5.png" alt="">
          </div>
@@ -197,7 +242,7 @@
                <i class="fas fa-star"></i>
             </div>
             <p>Excellent price and the service was efficient and accurate. Highly recommended</p>
-            <h3>SubhaLaksmi Panda</h3>
+            <h3>Divyanshi Jain</h3>
             <span>traveler</span>
             <img src="images/pic-6.png" alt="">
          </div>
@@ -210,17 +255,49 @@
 
 <!-- reviews section ends -->
 
+<!-- ADD REVIEW SECTION STARTS -->
+
+<section class="review-section">
+   <div class="review-container">
+      <h2 class="heading-title">ADD YOUR REVIEW</h2>
+
+      <!-- Important: enctype added for image upload -->
+      <form action="" method="post" enctype="multipart/form-data" class="review-form">
+
+         <div class="inputBox">
+            <span>Your Name</span>
+            <input type="text" name="name" placeholder="Enter Your Name" required>
+         </div>
+
+         <div class="inputBox">
+            <span>Profile Photo</span>
+            <input type="file" name="profile_photo" accept="image/*" required>
+         </div>
+
+         <div class="inputBox">
+            <span>Rating</span>
+            <select name="rating" required>
+               <option value="" disabled selected>Select Rating</option>
+               <option value="5">5 - Excellent</option>
+               <option value="4">4 - Good</option>
+               <option value="3">3 - Average</option>
+               <option value="2">2 - Poor</option>
+               <option value="1">1 - Terrible</option>
+            </select>
+         </div>
+
+         <div class="inputBox">
+            <span>Your Review</span>
+            <textarea name="review" placeholder="Write Your Review Here..." required></textarea>
+         </div>
+
+         <button type="submit" name="submit_review" class="btn">Submit Review</button>
+      </form>
+   </div>
+</section>
 
 
-
-
-
-
-
-
-
-
-
+<!-- ADD REVIEW SECTION ENDS -->
 
 
 
@@ -250,8 +327,8 @@
          <h3>contact info</h3>
          <a href="#"> <i class="fas fa-phone"></i> +123-456-7890 </a>
          <a href="#"> <i class="fas fa-phone"></i> +111-222-3333 </a>
-         <a href="#"> <i class="fas fa-envelope"></i> shaikhanasghumolocal21@gmail.com </a>
-         <a href="#"> <i class="fas fa-map"></i> iter, bhubaneswar - 324030 </a>
+         <a href="#"> <i class="fas fa-envelope"></i> ghumolocal@gmail.com </a>
+         <a href="#"> <i class="fas fa-map"></i> Bhubaneswar, India - 400104 </a>
       </div>
 
       <div class="box">
@@ -264,7 +341,7 @@
 
    </div>
 
-   <div class="credit"> created by <span>ghumo local team</span> | all rights reserved! </div>
+   <div class="credit"> created by <span>Ghumo Local</span> | all rights reserved! </div>
 
 </section>
 
