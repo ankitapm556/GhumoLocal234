@@ -540,100 +540,6 @@ section{
    margin-top: 2rem;
 }
 
-/* login css */
-.login .login-form{
-   padding:2rem;
-   background: var(--light-bg);
-}
-
-.login .login-form .flex{
-   display: flex;
-   flex-wrap: wrap;
-   gap:2rem;
-}
-
-.login .login-form .flex .inputBox{
-   flex:1 1 41rem;
-}
-
-.login .login-form .flex .inputBox input{
-   width: 100%;
-   padding:1.2rem 1.4rem;
-   font-size: 1.6rem;
-   color:var(--light-black);
-   text-transform: none;
-   margin-top: 1.5rem;
-   border:var(--border);
-}
-
-.login .login-form .flex .inputBox input:focus{
-   background: var(--black);
-   color:var(--white);
-}
-
-.login .login-form .flex .inputBox input:focus::placeholder{
-   color:var(--light-white);
-}
-
-.login .login-form .flex .inputBox span{
-   font-size: 1.5rem;
-   color:var(--light-black);
-}
-
-.login .login-form .btn{
-   margin-top: 2rem;
-}
-
-/* registration css */
-.registration .registration-form{
-   padding:2rem;
-   background: var(--light-bg);
-}
-
-.registration .registration-form .flex{
-   display: flex;
-   flex-wrap: wrap;
-   gap:2rem;
-}
-
-.registration .registration-form .flex .inputBox{
-   flex:1 1 41rem;
-}
-
-.registration .registration-form .flex .inputBox input{
-   width: 100%;
-   padding:1.2rem 1.4rem;
-   font-size: 1.6rem;
-   color:var(--light-black);
-   text-transform: none;
-   margin-top: 1.5rem;
-   border:var(--border);
-}
-
-.registration .registration-form .flex .inputBox input:focus{
-   background: var(--black);
-   color:var(--white);
-}
-
-.registration .registration-form .flex .inputBox input:focus::placeholder{
-   color:var(--light-white);
-}
-
-.registration .registration-form .flex .inputBox span{
-   font-size: 1.5rem;
-   color:var(--light-black);
-}
-
-.registration .registration-form .btn{
-   margin-top: 2rem;
-}
-
-
-
-
-
-
-
 
 
 
@@ -774,3 +680,5 @@ section{
    }
 
 }
+
+
