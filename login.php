@@ -1,25 +1,32 @@
+<?php
+session_start();
+$error = '';
+if(isset($_SESSION['login_error'])){
+    $error = $_SESSION['login_error'];
+    unset($_SESSION['login_error']); // remove it after showing
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>login</title>
+   <title>Login | Ghumo Local</title>
 
-   <!-- swiper css link  -->
-   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
-
-   <!-- font awesome cdn link  -->
+   <!-- font awesome -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-   <!-- custom css file link  -->
+   <!-- main site css -->
    <link rel="stylesheet" href="css/style.css">
 
+   <!-- login / register css -->
+   <link rel="stylesheet" href="css/auth.css">
 </head>
 <body>
-   
-<!-- header section starts  -->
 
+<!-- HEADER -->
 <section class="header">
 
    <a href="home.php" class="logo">Ghumo Local</a>
@@ -29,58 +36,68 @@
       <a href="about.php">about</a>
       <a href="package.php">package</a>
       <a href="book.php">book</a>
-      <a href="login.php">login</a>
-      <a href="registration.php">register</a>
-   </nav>
+
+      <?php if(isset($_SESSION['user_id'])): ?>
+      <span style="font-size: 1.7rem; color: #2e7d32; margin-right: 10px;">
+         Hi, <?php echo $_SESSION['user_name']; ?>
+      </span>
+      <a href="logout.php" class="btn-login" style="background:red;color:white;padding:10px 20px;border-radius:20px;">Logout</a>
+   <?php else: ?>
+      <a href="login.php" class="btn-login" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Login</a>
+      <a href="registration.php" class="btn-register" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Register</a>
+   <?php endif; ?>
+</nav>
 
    <div id="menu-btn" class="fas fa-bars"></div>
 
 </section>
+<!-- HEADER END -->
 
-<!-- header section ends -->
-
+<!-- PAGE HEADING -->
 <div class="heading" style="background:url(images/header-bg-3.png) no-repeat">
-   <h1>login</h1>
+   <h1>Login</h1>
 </div>
 
-<!-- login section starts  -->
+<!-- LOGIN FORM -->
+<section class="auth">
 
-<section class="login">
+   <div class="auth-card">
+   <h2>Welcome Back</h2>
 
-   <form action="login_form.php" method="post" class="login-form">
+   <?php if($error != ''): ?>
+      <p style="color:red; text-align:center; margin-bottom:15px;"><?php echo $error; ?></p>
+   <?php endif; ?>
 
-      <div class="flex">
+   <form action="login_form.php" method="post">
+      <!-- input fields here -->
+
          <div class="inputBox">
-            <span>email :</span>
-            <input type="email" placeholder="enter your email" name="email">
+            <span>Email</span>
+            <input type="email" name="email" placeholder="Enter your email" required>
          </div>
-         <div class="inputBox">
-            <span>password :</span>
-            <input type="password" placeholder="enter your password" name="password">
-         </div>
-      <input type="submit" value="submit" class="btn" name="send">
 
-   </form>
+         <div class="inputBox">
+            <span>Password</span>
+            <input type="password" name="password" placeholder="Enter your password" required>
+         </div>
+
+         <div class="checkbox">
+            <input type="checkbox">
+            <label>Remember me</label>
+         </div>
+
+         <input type="submit" value="Login" name="login" class="btn">
+
+         <p class="auth-link">
+            Don’t have an account?
+            <a href="registration.php">Register</a>
+         </p>
+
+      </form>
+   </div>
 
 </section>
-
-<!-- login section ends -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- LOGIN END -->
 
 <!-- footer section starts  -->
 
@@ -108,8 +125,8 @@
          <h3>contact info</h3>
          <a href="#"> <i class="fas fa-phone"></i> +123-456-7890 </a>
          <a href="#"> <i class="fas fa-phone"></i> +111-222-3333 </a>
-         <a href="#"> <i class="fas fa-envelope"></i> shaikhanas@gmail.com </a>
-         <a href="#"> <i class="fas fa-map"></i> mumbai, india - 400104 </a>
+         <a href="#"> <i class="fas fa-envelope"></i> ghumolocal@gmail.com </a>
+         <a href="#"> <i class="fas fa-map"></i> Bhubaneswar, India - 400104 </a>
       </div>
 
       <div class="box">
@@ -122,24 +139,51 @@
 
    </div>
 
-   <div class="credit"> created by <span>ghumo local team</span> | all rights reserved! </div>
+   <div class="credit"> created by <span>Ghumo Local</span> | all rights reserved! </div>
 
 </section>
 
 <!-- footer section ends -->
 
+<!-- Registration Success Popup -->
+<div id="registerPopup" class="popup-overlay">
+  <div class="popup-content">
+    <h2>Registration Successful!</h2>
+    <p>Your account has been created. Please login to continue.</p>
+    <button id="closeRegisterPopup">Close</button>
+  </div>
+</div>
 
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.get('register') === 'success') {
+        const popup = document.getElementById('registerPopup');
+        if(popup) popup.style.display = 'flex';
+        // Remove the query string without reloading
+        window.history.replaceState({}, document.title, "login.php");
+    }
 
+    // Close popup button
+    const closeBtn = document.getElementById('closeRegisterPopup');
+    if(closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            document.getElementById('registerPopup').style.display = 'none';
+        });
+    }
 
+    // Close if clicking outside content
+    const popupOverlay = document.getElementById('registerPopup');
+    if(popupOverlay){
+        popupOverlay.addEventListener('click', (e) => {
+            if(e.target === popupOverlay){
+                popupOverlay.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
 
-
-
-
-
-<!-- swiper js link  -->
-<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
-
-<!-- custom js file link  -->
 <script src="js/script.js"></script>
 
 </body>

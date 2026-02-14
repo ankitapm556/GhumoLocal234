@@ -4,7 +4,7 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>package</title>
+   <title>home</title>
 
    <!-- swiper css link  -->
    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
@@ -39,15 +39,116 @@
 
 <!-- header section ends -->
 
-<div class="heading" style="background:url(images/header-bg-2.png) no-repeat">
-   <h1>packages</h1>
-</div>
+<!-- home section starts  -->
 
-<!-- packages section starts  -->
+<section class="home">
 
-<section class="packages">
+   <div class="swiper home-slider">
 
-   <h1 class="heading-title">top destinations</h1>
+      <div class="swiper-wrapper">
+
+         <div class="swiper-slide slide" style="background:url(images/home-slide-1.jpg) no-repeat">
+            <div class="content">
+               <span>explore, discover, travel</span>
+               <h3>Explore the Under-Rated Beauties of Odisha</h3>
+               <a href="package.php" class="btn">discover more</a>
+            </div>
+         </div>
+
+         <div class="swiper-slide slide" style="background:url(images/home-slide-2.jpg) no-repeat">
+            <div class="content">
+               <span>explore, discover, travel</span>
+               <h3>discover the new places</h3>
+               <a href="package.php" class="btn">discover more</a>
+            </div>
+         </div>
+
+         <div class="swiper-slide slide" style="background:url(images/home-slide-3.jpg) no-repeat">
+            <div class="content">
+               <span>explore, discover, travel</span>
+               <h3>make your tour worthwhile</h3>
+               <a href="package.php" class="btn">discover more</a>
+            </div>
+         </div>
+         
+      </div>
+
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+
+   </div>
+
+</section>
+
+<!-- home section ends -->
+
+<!-- services section starts  -->
+
+<section class="services">
+
+   <h1 class="heading-title"> our services </h1>
+
+   <div class="box-container">
+
+      <div class="box">
+         <img src="images/icon-1.png" alt="">
+         <h3>adventure</h3>
+      </div>
+
+      <div class="box">
+         <img src="images/icon-2.png" alt="">
+         <h3>tour guide</h3>
+      </div>
+
+      <div class="box">
+         <img src="images/icon-3.png" alt="">
+         <h3>trekking</h3>
+      </div>
+
+      <div class="box">
+         <img src="images/icon-4.png" alt="">
+         <h3>camp fire</h3>
+      </div>
+
+      <div class="box">
+         <img src="images/icon-5.png" alt="">
+         <h3>off road</h3>
+      </div>
+
+      <div class="box">
+         <img src="images/icon-6.png" alt="">
+         <h3>camping</h3>
+      </div>
+
+   </div>
+
+</section>
+
+<!-- services section ends -->
+
+<!-- home about section starts  -->
+
+<section class="home-about">
+
+   <div class="image">
+      <img src="images/about-img.jpg" alt="">
+   </div>
+
+   <div class="content">
+      <h3>about us</h3>
+      <p>At Ghumo Local, quality and service go hand in hand. We are committed to delivering excellence at every stage of your journey. By closely monitoring client satisfaction, we continuously seek new ways to exceed expectations. We take pride in offering products that provide true value for money—because outstanding value isn’t just about price, it’s about getting every detail right.</p>
+      <a href="about.php" class="btn">read more</a>
+   </div>
+
+</section>
+
+<!-- home about section ends -->
+
+<!-- home packages section starts  -->
+
+<section class="home-packages">
+
+   <h1 class="heading-title"> Top Destinations </h1>
 
    <div class="box-container">
 
@@ -72,56 +173,38 @@
             <a href="koraput.html" class="btn">Details</a>
          </div>
       </div>
-
+      
       <div class="box">
          <div class="image">
             <img src="images/img-3.jpg" alt="">
          </div>
          <div class="content">
-           <h3>Kala Bhoomi Odisha Crafts Museum</h3>
+            <h3>Kala Bhoomi Odisha Crafts Museum</h3>
             <p>Odisha Crafts Museum also known as Kalabhoomi designed by Architects' Studio, is a museum in Bhubaneswar, Odisha, India, dedicated to the art and crafts of Odisha. It was inaugurated by the Chief Minister of Odisha, Naveen Patnaik, on 22 March 2018.</p>
-            <a href="book.php" class="btn">Details</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-4.jpg" alt="">
-         </div>
-         <div class="content">
-           <h3>Koilighugar</h3>
-            <p>its 200-foot cascade in Ahiraj rivulet, which comes from 'Chhuikhanch' woodland, is located close to Kushmelbahal village in Lakhanpur. Once it joins the Mahanadi River, it creates a picturesque oasis. Within is buried Maheswarnath, a submerged Shivalingam, with an outside one for pilgrims' convenience.</p>
-            <a href="book.php" class="btn">Details</a> 
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-5.jfif" alt="">
-         </div>
-         <div class="content">
-            <h3>Deras Dam</h3>
-            <p>Deras Dam, located around 20 km away from Bhubaneswar, is considered among the largest dams in Odisha. Established in the year 1967 as a water reservoir, the dam’s main source of water is rain water. This dam was constructed mainly for irrigation purposes. However, a few canals that originate from the dam also serve as the source of water for the animals living in the Chandaka Wildlife Sanctuary.</p>
-            <a href="book.php" class="btn">Details</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-6.webp" alt="">
-         </div>
-         <div class="content">
-            <h3>Pandava Bakhra Caves</h3>
-            <p>Pandava Bakhara is an old cave that is associated with mythological stories. According to local people, the Pandavas spent a few days here during their exile in this rock shelter hence the name Pandava Bakhara. According to history, the Panchu Pandava brothers stayed in these caves during their Mahabharata-era exile (Vanvas). Therefore, this place is named after him, Pandava Bakhara.</p>
             <a href="book.php" class="btn">Details</a>
          </div>
       </div>
 
    </div>
 
+   <div class="load-more"> <a href="package.php" class="btn">load more</a> </div>
+
 </section>
 
-<!-- packages section ends -->
+<!-- home packages section ends -->
+
+<!-- home offer section starts  -->
+
+<section class="home-offer">
+   <div class="content">
+      <h3>upto 50% off</h3>
+      <p>Let us plan you a perfect Holiday where you can relax and feel free from the day to day busy and boring routines. Have a great time with your loved ones and make that memorable!</p>
+      <a href="book.php" class="btn">book now</a>
+   </div>
+</section>
+
+<!-- home offer section ends -->
+
 
 
 

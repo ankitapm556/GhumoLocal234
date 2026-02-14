@@ -14,6 +14,7 @@
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="css/auth.css">
 
 </head>
 <body>
@@ -29,8 +30,8 @@
       <a href="about.php">about</a>
       <a href="package.php">package</a>
       <a href="book.php">book</a>
-      <a href="login.php">login</a>
-      <a href="registration.php">register</a>
+      <a href="login.php" class="btn-login" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Login</a>
+      <a href="registration.php" class="btn-register" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Register</a>
    </nav>
 
    <div id="menu-btn" class="fas fa-bars"></div>
@@ -136,8 +137,8 @@
          <h3>contact info</h3>
          <a href="#"> <i class="fas fa-phone"></i> +123-456-7890 </a>
          <a href="#"> <i class="fas fa-phone"></i> +111-222-3333 </a>
-         <a href="#"> <i class="fas fa-envelope"></i> shaikhanas@gmail.com </a>
-         <a href="#"> <i class="fas fa-map"></i> mumbai, india - 400104 </a>
+         <a href="#"> <i class="fas fa-envelope"></i> ghumolocal@gmail.com </a>
+         <a href="#"> <i class="fas fa-map"></i> Bhubaneswar, India - 400104 </a>
       </div>
 
       <div class="box">
@@ -150,7 +151,7 @@
 
    </div>
 
-   <div class="credit"> created by <span>ghumo local team</span> | all rights reserved! </div>
+   <div class="credit"> created by <span>Ghumo Local</span> | all rights reserved! </div>
 
 </section>
 
@@ -166,6 +167,15 @@
 
 <!-- swiper js link  -->
 <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+
+<!-- Booking Completed Popup -->
+<div id="bookingPopup" class="popup-overlay">
+  <div class="popup-content">
+    <h2>Booking Completed!</h2>
+    <p>Thank you for booking with us. Your reservation has been successfully completed.</p>
+    <button id="closePopupBtn">Close</button>
+  </div>
+</div>
 
 <!-- custom js file link  -->
 <script src="js/script.js"></script>
