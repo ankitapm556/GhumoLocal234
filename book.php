@@ -1,26 +1,52 @@
+<?php
+session_start();
+include 'db.php';
+
+// Redirect if not logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Logged-in user id
+$user_id = $_SESSION['user_id'];
+
+// Fetch booking history (SECURE WAY)
+$stmt = $conn->prepare("SELECT * FROM book_form WHERE user_id = ? ORDER BY id DESC");
+$stmt->bind_param("i", $user_id); // i = integer
+$stmt->execute();
+$booking_result = $stmt->get_result();
+?>
+
+<?php if (isset($_GET['confirmed'])): ?>
+<script>
+  window.onload = function () {
+    showPopup("<?php echo $_GET['name']; ?>");
+  }
+</script>
+<?php endif; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>book</title>
+   <title>Book</title>
 
-   <!-- swiper css link  -->
+   <!-- swiper css -->
    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
 
-   <!-- font awesome cdn link  -->
+   <!-- font awesome -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-   <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
+   <!-- custom css -->
    <link rel="stylesheet" href="css/auth.css">
-
+   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-   
-<!-- header section starts  -->
 
+<!-- header section starts -->
 <section class="header">
 
    <a href="home.php" class="logo">Ghumo Local</a>
@@ -30,14 +56,29 @@
       <a href="about.php">about</a>
       <a href="package.php">package</a>
       <a href="book.php">book</a>
-      <a href="login.php" class="btn-login" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Login</a>
-      <a href="registration.php" class="btn-register" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Register</a>
+
+      <?php if(isset($_SESSION['user_id'])): ?>
+         <span style="color:#2e7d32;font-size:1.5rem;margin-right:10px;">
+            Hi, <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+         </span>
+         <a href="logout.php"
+            style="background:red;color:white;padding:10px 20px;border-radius:20px;">
+            Logout
+         </a>
+      <?php else: ?>
+         <a href="login.php"
+            style="background:green;color:white;padding:10px 20px;border-radius:20px;">
+            Login
+         </a>
+         <a href="registration.php"
+            style="background:green;color:white;padding:10px 20px;border-radius:20px;">
+            Register
+         </a>
+      <?php endif; ?>
    </nav>
 
    <div id="menu-btn" class="fas fa-bars"></div>
-
 </section>
-
 <!-- header section ends -->
 
 <div class="heading" style="background:url(images/header-bg-3.png) no-repeat">
@@ -95,20 +136,58 @@
 
 <!-- booking section ends -->
 
+<section class="booking-history">
+  <h1 class="heading-title">My Bookings</h1>
 
+  <div class="history-container">
 
+  <?php if(mysqli_num_rows($booking_result) > 0): ?>
+    <?php while($row = mysqli_fetch_assoc($booking_result)): ?>
 
+      <div class="history-card">
+        <h3><?= htmlspecialchars($row['location']) ?></h3>
 
+        <p class="date">
+          <strong>Booked on:</strong> <?= date('d M Y', strtotime($row['arrivals'])) ?>
+        </p>
 
+        <p><strong>Guests:</strong> <?= $row['guests'] ?></p>
+        <p><strong>Arrival:</strong> <?= $row['arrivals'] ?></p>
+        <p><strong>Leaving:</strong> <?= $row['leaving'] ?></p>
 
+      </div>
 
+    <?php endwhile; ?>
+  <?php else: ?>
+   <p class='no-bookings'>No bookings found.</p>
+  <?php endif; ?>
 
+  </div>
+</section>
 
+<div id="bookingPopup" class="popup-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+  <div class="popup-box" style="background:#fff; padding:30px; border-radius:10px; text-align:center; width:300px;">
+    <h2>🎉 Booking Confirmed</h2>
+    <p id="popupMessage"></p>
+    <button onclick="closePopup()" style="padding:10px 20px; border:none; background:#4CAF50; color:white; border-radius:5px; cursor:pointer;">OK</button>
+  </div>
+</div>
 
+<script>
+function showPopup(name) {
+  document.getElementById("popupMessage").innerText =
+    "Hi " + name + ", your booking is confirmed!";
+  document.getElementById("bookingPopup").style.display = "flex";
+}
 
+function closePopup() {
+  // Hide the popup
+  document.getElementById("bookingPopup").style.display = "none";
 
-
-
+  // Redirect to book.php
+  window.location.href = 'book.php';
+}
+</script>
 
 
 <!-- footer section starts  -->

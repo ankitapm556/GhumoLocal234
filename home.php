@@ -1,10 +1,13 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>home</title>
+   <title>Home | Ghumo Local</title>
 
    <!-- swiper css link  -->
    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
@@ -14,12 +17,10 @@
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/style.css">
-
 </head>
 <body>
-   
-<!-- header section starts  -->
 
+<!-- HEADER -->
 <section class="header">
 
    <a href="home.php" class="logo">Ghumo Local</a>
@@ -29,22 +30,35 @@
       <a href="about.php">about</a>
       <a href="package.php">package</a>
       <a href="book.php">book</a>
-      <a href="login.php" class="btn-login" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Login</a>
-      <a href="registration.php" class="btn-register" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Register</a>
+
+      <?php if (isset($_SESSION['user_id'])): ?>
+         <span style="font-size:1.6rem;color:#2e7d32;margin-right:10px;">
+            Hi, <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+         </span>
+         <a href="logout.php"
+            style="background:red;color:white;padding:10px 20px;border-radius:20px;">
+            Logout
+         </a>
+      <?php else: ?>
+         <a href="login.php"
+            style="background:green;color:white;padding:10px 20px;border-radius:20px;">
+            Login
+         </a>
+         <a href="registration.php"
+            style="background:green;color:white;padding:10px 20px;border-radius:20px;">
+            Register
+         </a>
+      <?php endif; ?>
    </nav>
 
    <div id="menu-btn" class="fas fa-bars"></div>
-
 </section>
+<!-- HEADER END -->
 
-<!-- header section ends -->
-
-<!-- home section starts  -->
-
+<!-- HOME SECTION -->
 <section class="home">
 
    <div class="swiper home-slider">
-
       <div class="swiper-wrapper">
 
          <div class="swiper-slide slide" style="background:url(images/home-slide-1.jpg) no-repeat">
@@ -70,59 +84,30 @@
                <a href="package.php" class="btn">discover more</a>
             </div>
          </div>
-         
+
       </div>
 
       <div class="swiper-button-next"></div>
       <div class="swiper-button-prev"></div>
-
    </div>
 
 </section>
+<!-- HOME END -->
 
-<!-- home section ends -->
-
-<!-- services section starts  -->
-
+<!-- SERVICES -->
 <section class="services">
-
    <h1 class="heading-title"> our services </h1>
 
    <div class="box-container">
-
-      <div class="box">
-         <img src="images/icon-1.png" alt="">
-         <h3>adventure</h3>
-      </div>
-
-      <div class="box">
-         <img src="images/icon-2.png" alt="">
-         <h3>tour guide</h3>
-      </div>
-
-      <div class="box">
-         <img src="images/icon-3.png" alt="">
-         <h3>trekking</h3>
-      </div>
-
-      <div class="box">
-         <img src="images/icon-4.png" alt="">
-         <h3>camp fire</h3>
-      </div>
-
-      <div class="box">
-         <img src="images/icon-5.png" alt="">
-         <h3>off road</h3>
-      </div>
-
-      <div class="box">
-         <img src="images/icon-6.png" alt="">
-         <h3>camping</h3>
-      </div>
-
+      <div class="box"><img src="images/icon-1.png"><h3>adventure</h3></div>
+      <div class="box"><img src="images/icon-2.png"><h3>tour guide</h3></div>
+      <div class="box"><img src="images/icon-3.png"><h3>trekking</h3></div>
+      <div class="box"><img src="images/icon-4.png"><h3>camp fire</h3></div>
+      <div class="box"><img src="images/icon-5.png"><h3>off road</h3></div>
+      <div class="box"><img src="images/icon-6.png"><h3>camping</h3></div>
    </div>
-
 </section>
+
 
 <!-- services section ends -->
 

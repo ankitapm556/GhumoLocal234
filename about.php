@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // Connect to database
 $conn = mysqli_connect("localhost", "root", "", "ghumolocal");
 
@@ -8,80 +10,56 @@ if(isset($_POST['submit_review'])) {
    $rating = mysqli_real_escape_string($conn, $_POST['rating']);
    $review = mysqli_real_escape_string($conn, $_POST['review']);
 
-   // ================= IMAGE UPLOAD =================
+   // IMAGE UPLOAD
    $image_name = $_FILES['profile_photo']['name'];
    $image_tmp = $_FILES['profile_photo']['tmp_name'];
    $image_size = $_FILES['profile_photo']['size'];
 
    $upload_folder = "uploads/";
 
-   // Create uploads folder if not exists
    if(!is_dir($upload_folder)){
       mkdir($upload_folder, 0777, true);
    }
 
-   // Create unique image name
    $new_image_name = time() . "_" . basename($image_name);
    $target_file = $upload_folder . $new_image_name;
 
-   // Allowed extensions
    $allowed_types = ['jpg','jpeg','png','gif'];
    $file_ext = strtolower(pathinfo($new_image_name, PATHINFO_EXTENSION));
 
    if(in_array($file_ext, $allowed_types)) {
-
-      if($image_size <= 2 * 1024 * 1024) { // 2MB limit
-
+      if($image_size <= 2 * 1024 * 1024) {
          if(move_uploaded_file($image_tmp, $target_file)) {
 
-            // Save to database (NOW includes profile_photo column)
             $query = "INSERT INTO reviews (name, rating, review, profile_photo) 
                       VALUES ('$name', '$rating', '$review', '$target_file')";
 
             if(mysqli_query($conn, $query)) {
-               echo "<script>alert('Review saved to Ghumo Local!'); window.location.href='about.php';</script>";
+               echo "<script>alert('Review saved successfully!'); window.location.href='about.php';</script>";
             } else {
-               echo "Database Error: " . mysqli_error($conn);
+               echo "Database Error";
             }
-
-         } else {
-            echo "Failed to upload image.";
          }
-
-      } else {
-         echo "Image size must be less than 2MB.";
       }
-
-   } else {
-      echo "Only JPG, JPEG, PNG & GIF files allowed.";
    }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>about</title>
+   <title>About</title>
 
-   <!-- swiper css link  -->
-   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
-
-   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-   <!-- custom css file link  -->
    <link rel="stylesheet" href="css/style.css">
    <link rel="stylesheet" href="css/auth.css">
-
 </head>
-<body>
-   
-<!-- header section starts  -->
 
+<body>
+
+<!-- HEADER START -->
 <section class="header">
 
    <a href="home.php" class="logo">Ghumo Local</a>
@@ -91,15 +69,31 @@ if(isset($_POST['submit_review'])) {
       <a href="about.php">about</a>
       <a href="package.php">package</a>
       <a href="book.php">book</a>
-      <a href="login.php" class="btn-login" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Login</a>
-      <a href="registration.php" class="btn-register" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Register</a>
+
+      <?php if(isset($_SESSION['user_id'])): ?>
+         <span style="color:#2e7d32;font-size:1.5rem;margin-right:10px;">
+            Hi, <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+         </span>
+
+         <a href="logout.php"
+            style="background:red;color:white;padding:10px 20px;border-radius:20px;">
+            Logout
+         </a>
+      <?php else: ?>
+         <a href="login.php"
+            style="background:green;color:white;padding:10px 20px;border-radius:20px;">
+            Login
+         </a>
+         <a href="registration.php"
+            style="background:green;color:white;padding:10px 20px;border-radius:20px;">
+            Register
+         </a>
+      <?php endif; ?>
    </nav>
 
    <div id="menu-btn" class="fas fa-bars"></div>
-
 </section>
-
-<!-- header section ends -->
+<!-- HEADER END -->
 
 <div class="heading" style="background:url(images/header-bg-1.png) no-repeat">
    <h1>about us</h1>

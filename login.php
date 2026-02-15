@@ -1,9 +1,21 @@
 <?php
+// 1) Start session once, before any output
 session_start();
+
+// 2) Redirect logged‑in users away from the login page
+//    Use the same session key your login handler sets.
+//    In your nav you used $_SESSION['user_id'], so we check that here.
+//    If your login code uses a different key, replace 'user_id' with that key.
+if (isset($_SESSION['user_id'])) {
+    header("Location: home.php");
+    exit();
+}
+
+// 3) Prepare error message if any
 $error = '';
-if(isset($_SESSION['login_error'])){
+if (isset($_SESSION['login_error'])) {
     $error = $_SESSION['login_error'];
-    unset($_SESSION['login_error']); // remove it after showing
+    unset($_SESSION['login_error']); // remove after showing once
 }
 ?>
 
@@ -37,16 +49,16 @@ if(isset($_SESSION['login_error'])){
       <a href="package.php">package</a>
       <a href="book.php">book</a>
 
-      <?php if(isset($_SESSION['user_id'])): ?>
-      <span style="font-size: 1.7rem; color: #2e7d32; margin-right: 10px;">
-         Hi, <?php echo $_SESSION['user_name']; ?>
-      </span>
-      <a href="logout.php" class="btn-login" style="background:red;color:white;padding:10px 20px;border-radius:20px;">Logout</a>
-   <?php else: ?>
-      <a href="login.php" class="btn-login" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Login</a>
-      <a href="registration.php" class="btn-register" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Register</a>
-   <?php endif; ?>
-</nav>
+      <?php if (isset($_SESSION['user_id'])): ?>
+         <span style="font-size: 1.7rem; color: #2e7d32; margin-right: 10px;">
+            Hi, <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+         </span>
+         <a href="logout.php" class="btn-login" style="background:red;color:white;padding:10px 20px;border-radius:20px;">Logout</a>
+      <?php else: ?>
+         <a href="login.php" class="btn-login" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Login</a>
+         <a href="registration.php" class="btn-register" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Register</a>
+      <?php endif; ?>
+   </nav>
 
    <div id="menu-btn" class="fas fa-bars"></div>
 
@@ -64,13 +76,11 @@ if(isset($_SESSION['login_error'])){
    <div class="auth-card">
    <h2>Welcome Back</h2>
 
-   <?php if($error != ''): ?>
-      <p style="color:red; text-align:center; margin-bottom:15px;"><?php echo $error; ?></p>
+   <?php if ($error != ''): ?>
+      <p style="color:red; text-align:center; margin-bottom:15px;"><?php echo htmlspecialchars($error); ?></p>
    <?php endif; ?>
 
    <form action="login_form.php" method="post">
-      <!-- input fields here -->
-
          <div class="inputBox">
             <span>Email</span>
             <input type="email" name="email" placeholder="Enter your email" required>
@@ -126,7 +136,7 @@ if(isset($_SESSION['login_error'])){
          <a href="#"> <i class="fas fa-phone"></i> +123-456-7890 </a>
          <a href="#"> <i class="fas fa-phone"></i> +111-222-3333 </a>
          <a href="#"> <i class="fas fa-envelope"></i> ghumolocal@gmail.com </a>
-         <a href="#"> <i class="fas fa-map"></i> Bhubaneswar, India - 400104 </a>
+         <a href="#"> <i class="fas fa-map-marker-alt"></i> Bhubaneswar, India - 400104 </a>
       </div>
 
       <div class="box">
@@ -157,7 +167,7 @@ if(isset($_SESSION['login_error'])){
 <script>
 window.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
-    if(urlParams.get('register') === 'success') {
+    if (urlParams.get('register') === 'success') {
         const popup = document.getElementById('registerPopup');
         if(popup) popup.style.display = 'flex';
         // Remove the query string without reloading

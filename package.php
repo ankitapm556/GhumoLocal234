@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,19 +9,11 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>package</title>
 
-   <!-- swiper css link  -->
    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
-
-   <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-   <!-- custom css file link  -->
    <link rel="stylesheet" href="css/style.css">
-
 </head>
 <body>
-   
-<!-- header section starts  -->
 
 <section class="header">
 
@@ -29,12 +24,28 @@
       <a href="about.php">about</a>
       <a href="package.php">package</a>
       <a href="book.php">book</a>
-      <a href="login.php" class="btn-login" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Login</a>
-      <a href="registration.php" class="btn-register" style="background:green;color:white;padding:10px 20px;border-radius:20px;">Register</a>
+
+      <?php if(isset($_SESSION['user_id'])): ?>
+         <span style="color:#2e7d32;font-size:1.5rem;margin-right:10px;">
+            Hi, <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+         </span>
+         <a href="logout.php"
+            style="background:red;color:white;padding:10px 20px;border-radius:20px;">
+            Logout
+         </a>
+      <?php else: ?>
+         <a href="login.php"
+            style="background:green;color:white;padding:10px 20px;border-radius:20px;">
+            Login
+         </a>
+         <a href="registration.php"
+            style="background:green;color:white;padding:10px 20px;border-radius:20px;">
+            Register
+         </a>
+      <?php endif; ?>
    </nav>
 
    <div id="menu-btn" class="fas fa-bars"></div>
-
 </section>
 
 <!-- header section ends -->
